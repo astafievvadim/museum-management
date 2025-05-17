@@ -1,5 +1,5 @@
 version: 2
-authtoken: thisShouldGetToGit
+authtoken: andThisShouldnt
 tunnels:
   httpbin:
     proto: http
