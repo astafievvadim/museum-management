@@ -1,0 +1,6 @@
+version: 2
+authtoken: TESTOKEN
+tunnels:
+  httpbin:
+    proto: http
+    addr: 8080

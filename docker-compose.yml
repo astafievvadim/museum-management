@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  minio_db:
+    image: bitnami/minio:2025.4.22-debian-12-r1
+    container_name: museum-management-minio_db-1
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=password
+      - MINIO_DEFAULT_BUCKETS=object-models
+    volumes:
+      - minio_data:/data
+      - minio_bitnami_data:/bitnami/minio/data
+      - minio_certs:/certs
+    networks:
+      - museummanager-net
+
+  museum_db_pg_sql:
+    image: postgres:16
+    container_name: museum_db_pg_sql
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=museum
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - museummanager-net
+  ngrok:
+    image: ngrok/ngrok:latest
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    volumes:
+      - ./ngrok.yml:/etc/ngrok.yml
+    network_mode: host
+
+volumes:
+  minio_data:
+  minio_bitnami_data:
+  minio_certs:
+  pg_data:
+
+networks:
+  museummanager-net:
+    name: museum-management_museummanager-net
+    driver: bridge
