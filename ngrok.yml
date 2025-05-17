@@ -1,7 +1,7 @@
 version: 2
-authtoken: andThisShouldnt
+authtoken: thisWouldntGetToGit
 tunnels:
   httpbin:
     proto: http
     addr: 8080
-    #very secret message
+    #ss
