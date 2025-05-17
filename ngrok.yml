@@ -1,8 +1,0 @@
-version: 2
-authtoken: thisWouldntGetToGit
-tunnels:
-  httpbin:
-    proto: http
-    addr: 8080
-    #Tesdsadsadssadadaadsa
-    
