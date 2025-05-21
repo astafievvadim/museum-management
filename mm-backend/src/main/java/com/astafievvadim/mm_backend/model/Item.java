@@ -3,6 +3,7 @@ package com.astafievvadim.mm_backend.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Item {
@@ -17,22 +18,22 @@ public class Item {
 
     private Date year;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private ItemTypeEnum type;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="fileDataId")
-    private FileData fileData;
+    private FileMetadata fileMetadata;
 
     public Item() {
     }
 
-    public Item(String name, String description, Date year, ItemTypeEnum type, FileData fileData) {
+    public Item(String name, String description, Date year, ItemTypeEnum type, FileMetadata fileMetaData) {
         this.name = name;
         this.description = description;
         this.year = year;
         this.type = type;
-        this.fileData = fileData;
+        this.fileMetadata = fileMetaData;
     }
 
     public Long getId() {
@@ -75,11 +76,24 @@ public class Item {
         this.type = type;
     }
 
-    public FileData getFileData() {
-        return fileData;
+    public FileMetadata getFileData() {
+        return fileMetadata;
     }
 
-    public void setFileData(FileData fileData) {
-        this.fileData = fileData;
+    public void setFileData(FileMetadata fileMetadata) {
+        this.fileMetadata = fileMetadata;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item item)) return false;
+        return Objects.equals(id, item.id) && Objects.equals(name, item.name) && Objects.equals(description, item.description) && Objects.equals(year, item.year) && type == item.type && Objects.equals(fileMetadata, item.fileMetadata);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, year, type, fileMetadata);
     }
 }

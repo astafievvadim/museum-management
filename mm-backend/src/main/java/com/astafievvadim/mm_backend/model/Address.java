@@ -2,6 +2,9 @@ package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Address {
 
@@ -19,16 +22,23 @@ public class Address {
     @JoinColumn(name = "countryId")
     private Country country;
 
-    private String postal_code;
+    private String postalCode;
+    @OneToMany
+    private List<Partner> partners = new ArrayList<>();
+
+    @OneToMany
+    private List<Gallery> galleries = new ArrayList<>();
 
     public Address() {
     }
 
-    public Address(String street, City city, Country country, String postal_code) {
+    public Address(String street, City city, Country country, String postalCode, List<Partner> partners, List<Gallery> galleries) {
         this.street = street;
         this.city = city;
         this.country = country;
-        this.postal_code = postal_code;
+        this.postalCode = postalCode;
+        this.partners = partners;
+        this.galleries = galleries;
     }
 
     public Long getId() {
@@ -63,11 +73,27 @@ public class Address {
         this.country = country;
     }
 
-    public String getPostal_code() {
-        return postal_code;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostal_code(String postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public List<Partner> getPartners() {
+        return partners;
+    }
+
+    public void setPartners(List<Partner> partners) {
+        this.partners = partners;
+    }
+
+    public List<Gallery> getGalleries() {
+        return galleries;
+    }
+
+    public void setGalleries(List<Gallery> galleries) {
+        this.galleries = galleries;
     }
 }

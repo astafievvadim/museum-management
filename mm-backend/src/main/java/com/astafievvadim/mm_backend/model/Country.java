@@ -2,8 +2,10 @@ package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
-public class Country {
+public class Country implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

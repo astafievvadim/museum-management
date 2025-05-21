@@ -5,15 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity
+
 public enum RoleEnum {
 
-    CUSTOMER,
+    TICKET_AGENT,
     MANAGER,
     ADMIN;
-
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long id;
 
 }

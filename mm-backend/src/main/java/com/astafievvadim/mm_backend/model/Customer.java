@@ -2,35 +2,44 @@ package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import org.springframework.lang.Nullable;
 
 import java.util.Date;
-@Entity
-public class Person {
 
+@Entity
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated
-    @ManyToOne
-    @JoinColumn(name = "roleId")
-    private RoleEnum role;
-
     private String firstName;
+
     private String lastName;
+
     private Date birthdate;
     @Email
     private String email;
 
-    public Person() {
+    private Long telegramId;
+
+    @Column(name = "telegram_user_id", unique = true, nullable = false)
+    private Long telegramUserId;
+
+    @Column(name = "username")
+    @Nullable
+    private String telegramUsername;
+
+    public Customer() {
     }
 
-    public Person(String firstName, String lastName, Date birthdate, String email, RoleEnum role) {
+    public Customer(String firstName, String lastName, Date birthdate, String email, Long telegramId, Long telegramUserId, String telegramUsername) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthdate = birthdate;
         this.email = email;
-        this.role = role;
+        this.telegramId = telegramId;
+        this.telegramUserId = telegramUserId;
+        this.telegramUsername = telegramUsername;
     }
 
     public Long getId() {
@@ -73,11 +82,27 @@ public class Person {
         this.email = email;
     }
 
-    public RoleEnum getRole() {
-        return role;
+    public Long getTelegramId() {
+        return telegramId;
     }
 
-    public void setRole(RoleEnum role) {
-        this.role = role;
+    public void setTelegramId(Long telegramId) {
+        this.telegramId = telegramId;
+    }
+
+    public Long getTelegramUserId() {
+        return telegramUserId;
+    }
+
+    public void setTelegramUserId(Long telegramUserId) {
+        this.telegramUserId = telegramUserId;
+    }
+
+    public String getTelegramUsername() {
+        return telegramUsername;
+    }
+
+    public void setTelegramUsername(String telegramUsername) {
+        this.telegramUsername = telegramUsername;
     }
 }

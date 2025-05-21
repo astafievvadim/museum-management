@@ -1,37 +1,24 @@
-version: "3.8"
-#test
 services:
-  minio_db:
+
+  mm_minio_db:
     image: docker.io/bitnami/minio:2025
     container_name: mm_minio_db
     ports:
       - '9000:9000'
       - '9001:9001'
     environment:
-      - MINIO_ROOT_USER=admin
-      - MINIO_ROOT_PASSWORD=password
+      - MINIO_ROOT_USER=mm_minio_user
+      - MINIO_ROOT_PASSWORD=mm_minio_password
       - MINIO_DEFAULT_BUCKETS=object-models
     volumes:
       - 'minio_data:/bitnami/minio/data'
     networks:
       - mm-net
 
-  museum_db_pg_sql:
-    image: postgres:16
-    container_name: mm_postgres_db
-    ports:
-      - "5433:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=museum
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    networks:
-      - mm-net
-
-  ngrok:
+  mm_ngrok_web:
     image: ngrok/ngrok:latest
+    container_name: mm_ngrok_web
+    restart: unless-stopped
     command:
       - "start"
       - "--all"
@@ -40,6 +27,21 @@ services:
     volumes:
       - ./ngrok.yml:/etc/ngrok.yml
     network_mode: host
+
+  mm_postgres_db:
+    image: postgres:16
+    container_name: mm_postgres_db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: museum_db_user
+      POSTGRES_PASSWORD: museum_db_password
+      POSTGRES_DB: custom_museum
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - mm-net
 
 volumes:
   minio_data:
@@ -50,4 +52,4 @@ volumes:
 networks:
   mm-net:
     name: mm-net
-    driver: bridge
+

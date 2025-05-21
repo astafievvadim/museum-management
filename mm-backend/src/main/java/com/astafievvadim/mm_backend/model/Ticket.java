@@ -14,7 +14,7 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "customerId")
-    private Person customer;
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "eventId")
@@ -26,14 +26,14 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "employeeId")
-    private Person employee;
+    private Employee employee;
 
     private boolean isValid;
 
     public Ticket() {
     }
 
-    public Ticket(Date purchaseDate, Person customer, Event event, TicketType ticketType, Person employee, boolean isValid) {
+    public Ticket(Date purchaseDate, Customer customer, Event event, TicketType ticketType, Employee employee, boolean isValid) {
         this.purchaseDate = purchaseDate;
         this.customer = customer;
         this.event = event;
@@ -58,11 +58,11 @@ public class Ticket {
         this.purchaseDate = purchaseDate;
     }
 
-    public Person getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Person customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
@@ -82,11 +82,11 @@ public class Ticket {
         this.ticketType = ticketType;
     }
 
-    public Person getEmployee() {
+    public Employee getEmployee() {
         return employee;
     }
 
-    public void setEmployee(Person employee) {
+    public void setEmployee(Employee employee) {
         this.employee = employee;
     }
 

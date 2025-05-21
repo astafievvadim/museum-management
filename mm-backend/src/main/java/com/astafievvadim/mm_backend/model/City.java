@@ -12,19 +12,17 @@ public class City {
 
     private String name;
 
-    private String postal_code;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cityId")
-    private City city;
+    private String postalCode;
+    @ManyToOne
+    private Country country;
 
     public City() {
     }
 
-    public City(String name, String postal_code, City city) {
+    public City(String name, String postalCode, Country country) {
         this.name = name;
-        this.postal_code = postal_code;
-        this.city = city;
+        this.postalCode = postalCode;
+        this.country = country;
     }
 
     public Long getId() {
@@ -43,19 +41,19 @@ public class City {
         this.name = name;
     }
 
-    public String getPostal_code() {
-        return postal_code;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostal_code(String postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(String postal_code) {
+        this.postalCode = postal_code;
     }
 
-    public City getCity() {
-        return city;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCity(City city) {
-        this.city = city;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 }
