@@ -3,6 +3,7 @@ package com.astafievvadim.mm_backend.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "gallery")
 public class Gallery {
 
     @Id
@@ -12,7 +13,7 @@ public class Gallery {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cityId")
+    @JoinColumn(name = "address_id")
     private Address address;
 
     public Gallery() {

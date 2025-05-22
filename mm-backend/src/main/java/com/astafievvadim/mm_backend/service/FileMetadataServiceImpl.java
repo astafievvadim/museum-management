@@ -46,7 +46,6 @@ public class FileMetadataServiceImpl implements FileMetadataService {
             metadata.setContentType(file.getContentType());
             metadata.setSize(file.getSize());
             metadata.setLastModified(new Date());
-            metadata.setItem(item);
             fileMetadataRepository.save(metadata);
 
             return new FileResponse(
@@ -134,7 +133,7 @@ public class FileMetadataServiceImpl implements FileMetadataService {
             minioStorageService.delete(oldMetadata.getFilename());
 
             // Unlink old metadata from item and save item first
-            item.setFileData(null);
+            item.setFileMetadata(null);
             itemRepository.save(item);
 
             // Delete old metadata and flush to DB immediately
@@ -151,14 +150,12 @@ public class FileMetadataServiceImpl implements FileMetadataService {
             newMetadata.setContentType(file.getContentType());
             newMetadata.setSize(file.getSize());
             newMetadata.setLastModified(new Date());
-            newMetadata.setItem(item);
-
             // Save new metadata
             fileMetadataRepository.save(newMetadata);
             fileMetadataRepository.flush();
 
             // Link new metadata and save item
-            item.setFileData(newMetadata);
+            item.setFileMetadata(newMetadata);
             itemRepository.save(item);
 
             return new FileResponse(

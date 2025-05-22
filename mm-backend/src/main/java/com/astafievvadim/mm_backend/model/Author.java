@@ -1,18 +1,15 @@
 package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Author {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToMany
-    private List<Item> items;
 
     private String name;
 
@@ -22,19 +19,27 @@ public class Author {
 
     private Date deathDate;
 
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
     @ManyToOne
-    @JoinColumn(name="countryId")
+    @JoinColumn(name = "country_id")
     private Country country;
+
+    @OneToMany(mappedBy = "author")
+    private List<Item> items;
+
 
     public Author() {
     }
 
-    public Author(List<Item> items, String name, String lastname, Date birthDate, Date deathDate, Country country) {
+    public Author(List<Item> items, String name, String lastname, Date birthDate, Date deathDate, String bio, Country country) {
         this.items = items;
         this.name = name;
         this.lastname = lastname;
         this.birthDate = birthDate;
         this.deathDate = deathDate;
+        this.bio = bio;
         this.country = country;
     }
 
@@ -78,6 +83,14 @@ public class Author {
         this.deathDate = deathDate;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
     public Country getCountry() {
         return country;
     }
@@ -93,4 +106,6 @@ public class Author {
     public void setItems(List<Item> items) {
         this.items = items;
     }
+
+
 }

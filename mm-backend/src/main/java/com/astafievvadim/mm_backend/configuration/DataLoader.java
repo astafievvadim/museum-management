@@ -2,6 +2,7 @@ package com.astafievvadim.mm_backend.configuration;
 
 import com.astafievvadim.mm_backend.model.*;
 import com.astafievvadim.mm_backend.payload.FileResponse;
+import com.astafievvadim.mm_backend.repo.ExhibitRepo;
 import com.astafievvadim.mm_backend.service.*;
 import com.astafievvadim.mm_backend.util.MockMultipartFile;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -31,6 +33,7 @@ public class DataLoader implements CommandLineRunner {
     private final CustomerService customerService;
 
     private final EmployeeService employeeService;
+    private final ExhibitRepo exhibitRepo;
 
     public DataLoader(AddressService addressService,
                       GalleryService galleryService,
@@ -46,7 +49,8 @@ public class DataLoader implements CommandLineRunner {
                       CityService cityService,
                       CountryService countryService,
                       CustomerService customerService,
-                      EmployeeService employeeService) {
+                      EmployeeService employeeService,
+                      ExhibitRepo exhibitRepo) {
         this.addressService = addressService;
         this.galleryService = galleryService;
         this.hallService = hallService;
@@ -62,6 +66,7 @@ public class DataLoader implements CommandLineRunner {
         this.countryService = countryService;
         this.customerService = customerService;
         this.employeeService = employeeService;
+        this.exhibitRepo = exhibitRepo;
     }
 
     // Helper to create java.util.Date
@@ -74,6 +79,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+
+
         // Create Countries
         Country countryUSA = new Country();
         countryUSA.setName("USA");
@@ -136,7 +144,7 @@ public class DataLoader implements CommandLineRunner {
         item1.setName("Sunset Painting");
         item1.setDescription("A beautiful sunset painting.");
         item1.setYear(new Date(2020));
-        item1.setType(ItemTypeEnum.Painting);
+        item1.setType(ItemTypeEnum.PAINTING);
         item1 = itemService.create(item1);  // saved and managed entity returned
 
         // 2. Create MultipartFile mock (replace with actual bytes)
@@ -151,7 +159,7 @@ public class DataLoader implements CommandLineRunner {
         FileMetadata fileMetadataEntity1 = fileMetadataService.findById(fileResponse1.getFileId());
 
 // Assign FileMetadata entities to items
-        item1.setFileData(fileMetadataEntity1);
+        item1.setFileMetadata(fileMetadataEntity1);
         itemService.update(item1, item1.getId());
 
         // Events
@@ -250,7 +258,7 @@ public class DataLoader implements CommandLineRunner {
         employeeA.setBirthdate(new Date()); // or any specific date
         employeeA.setEmail("employee.a@example.com");
 // set RoleEnum if required, e.g. employeeA.setRole(roleEnum);
-        employeeA.setRole(RoleEnum.TICKET_AGENT);
+        employeeA.setRole(RoleEnum.ROLE_TICKET_AGENT);
         employeeA = employeeService.create(employeeA);  // assuming you have employeeService
 
         Employee employeeB = new Employee();
@@ -259,7 +267,7 @@ public class DataLoader implements CommandLineRunner {
         employeeB.setBirthdate(new Date());
         employeeB.setEmail("employee.b@example.com");
 // set RoleEnum if required, e.g. employeeB.setRole(roleEnum);
-        employeeB.setRole(RoleEnum.ADMIN);
+        employeeB.setRole(RoleEnum.ROLE_ADMIN);
         employeeB = employeeService.create(employeeB);
 
 // Tickets
@@ -281,6 +289,43 @@ public class DataLoader implements CommandLineRunner {
         ticket2.setValid(true);
         ticket2 = ticketService.create(ticket2);
 
+        // 1. Create a second item
+        Item item2 = new Item();
+        item2.setName("Ancient Sculpture");
+        item2.setDescription("An old marble sculpture.");
+        item2.setYear(new Date(1800));
+        item2.setType(ItemTypeEnum.PAINTING);
+        item2 = itemService.create(item2);
+
+// 2. Create a MultipartFile mock for second item
+        MultipartFile multipartFile2 = new MockMultipartFile(
+                "file2", "sculpture2.png", "image/png", new byte[]{ /* file bytes */ }
+        );
+        FileResponse fileResponse2 = fileMetadataService.addFile(multipartFile2, item2.getId());
+        FileMetadata fileMetadataEntity2 = fileMetadataService.findById(fileResponse2.getFileId());
+        item2.setFileMetadata(fileMetadataEntity2);
+        itemService.update(item2, item2.getId());
+
+// 3. Create Exhibit
+// 3. Create Exhibit
+        Exhibit exhibit1 = new Exhibit();
+        exhibit1.setName("Masterpieces Collection");
+        exhibit1.setCreationDate(createDate(2024, 5, 1));
+        exhibit1.setEndDate(createDate(2024, 10, 1));
+        exhibit1.setHall(hall1);
+
+        exhibit1.setItems(List.of(item1, item2));
+
+        exhibitRepo.save(exhibit1);
+
+// 5. Optionally create location for second item in a hall/event
+        Location location3 = new Location();
+        location3.setEvent(event1);
+        location3.setItem(item2);
+        location3.setHall(hall1);
+        location3.setPlaceDate(createDate(2024, 3, 5));
+        location3.setRemoveDate(createDate(2024, 4, 29));
+        location3 = locationService.create(location3);
 
 
         System.out.println("Fake data loaded successfully.");

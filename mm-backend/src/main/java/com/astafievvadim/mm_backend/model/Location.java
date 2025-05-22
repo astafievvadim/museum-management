@@ -1,31 +1,31 @@
 package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Location {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="eventId")
+    @JoinColumn(name = "eventId")
     private Event event;
 
     @ManyToOne
-    @JoinColumn(name="itemId")
+    @JoinColumn(name = "itemId")
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name="hallId")
+    @JoinColumn(name = "hallId")
     private Hall hall;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date placeDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date removeDate;
 
     public Location() {
@@ -38,6 +38,8 @@ public class Location {
         this.placeDate = placeDate;
         this.removeDate = removeDate;
     }
+
+    // Getters and setters below...
 
     public Long getId() {
         return id;

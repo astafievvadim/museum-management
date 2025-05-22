@@ -1,15 +1,13 @@
 package com.astafievvadim.mm_backend.model;
 
-import ch.qos.logback.core.model.Model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@Table(name = "file_metadata")
 public class FileMetadata {
 
     @Id
@@ -23,14 +21,13 @@ public class FileMetadata {
     private Long size;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modified")
     private Date lastModified;
 
-    // Link to your main entity, e.g., a Model entity
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     @JsonIgnore
     private Item item;
-
 
     public FileMetadata() {
     }
@@ -42,6 +39,8 @@ public class FileMetadata {
         this.lastModified = lastModified;
         this.item = item;
     }
+
+    // Getters and setters
 
     public Long getId() {
         return id;
@@ -91,15 +90,18 @@ public class FileMetadata {
         this.item = item;
     }
 
+    // equals and hashCode based on id only (recommended for JPA entities)
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FileMetadata that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(filename, that.filename) && Objects.equals(contentType, that.contentType) && Objects.equals(size, that.size) && Objects.equals(lastModified, that.lastModified) && Objects.equals(item, that.item);
+        if (!(o instanceof FileMetadata)) return false;
+        FileMetadata that = (FileMetadata) o;
+        return id != null && id.equals(that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, filename, contentType, size, lastModified, item);
+        return Objects.hashCode(id);
     }
 }

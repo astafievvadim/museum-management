@@ -1,11 +1,11 @@
 package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "exhibit")
 public class Exhibit {
 
     @Id
@@ -13,23 +13,44 @@ public class Exhibit {
     private Long id;
 
     @ManyToMany
+    @JoinTable(
+            name = "exhibit_item",
+            joinColumns = @JoinColumn(name = "exhibit_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
     private List<Item> items;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "creation_date")
+    @Temporal(TemporalType.DATE)
     private Date creationDate;
+
+    @Column(name = "end_date")
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hall_id")
+    private Hall hall;
 
     public Exhibit() {
     }
 
-    public Exhibit(List<Item> items, String name, String description, Date creationDate) {
+    public Exhibit(List<Item> items, String name, String description, Date creationDate, Date endDate, Hall hall) {
         this.items = items;
         this.name = name;
         this.description = description;
         this.creationDate = creationDate;
+        this.endDate = endDate;
+        this.hall = hall;
     }
+
+    // Getters and setters
 
     public Long getId() {
         return id;
@@ -69,5 +90,21 @@ public class Exhibit {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Hall getHall() {
+        return hall;
+    }
+
+    public void setHall(Hall hall) {
+        this.hall = hall;
     }
 }

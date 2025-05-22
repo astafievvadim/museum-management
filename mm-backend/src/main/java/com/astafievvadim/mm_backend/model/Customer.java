@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import org.springframework.lang.Nullable;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -17,22 +18,32 @@ public class Customer {
     private String lastName;
 
     private Date birthdate;
+
     @Email
     private String email;
 
     private Long telegramId;
 
-    @Column(name = "telegram_user_id", unique = true, nullable = false)
+    @Column(name = "telegram_user_id", unique = true, nullable = true)
     private Long telegramUserId;
 
-    @Column(name = "username")
-    @Nullable
+    @Column(name = "telegram_username", unique = true, nullable = true)
     private String telegramUsername;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Ticket> tickets;
+
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments;
 
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, Date birthdate, String email, Long telegramId, Long telegramUserId, String telegramUsername) {
+    public Customer(String firstName, String lastName, Date birthdate, String email, Long telegramId, Long telegramUserId, String telegramUsername, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthdate = birthdate;
@@ -40,6 +51,7 @@ public class Customer {
         this.telegramId = telegramId;
         this.telegramUserId = telegramUserId;
         this.telegramUsername = telegramUsername;
+        this.address = address;
     }
 
     public Long getId() {
@@ -104,5 +116,29 @@ public class Customer {
 
     public void setTelegramUsername(String telegramUsername) {
         this.telegramUsername = telegramUsername;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

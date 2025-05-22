@@ -3,6 +3,7 @@ package com.astafievvadim.mm_backend.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "hall")
 public class Hall {
 
     @Id
@@ -11,8 +12,8 @@ public class Hall {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name="galleryId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gallery_id")  // renamed to follow typical conventions
     private Gallery gallery;
 
     public Hall() {

@@ -1,27 +1,35 @@
 package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 
 @Entity
+@Table(name = "event")
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "start_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
+    @Column(name = "end_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
+    @Column(name = "capacity")
     private Integer capacity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hall_id")
     private Hall hall;
 
     public Event() {
@@ -35,6 +43,8 @@ public class Event {
         this.capacity = capacity;
         this.hall = hall;
     }
+
+    // Getters and setters
 
     public Long getId() {
         return id;

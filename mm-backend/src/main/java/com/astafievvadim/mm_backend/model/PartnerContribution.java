@@ -1,7 +1,6 @@
 package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 
 @Entity
@@ -11,15 +10,16 @@ public class PartnerContribution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="partnerId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partnerId")
     private Partner partner;
 
-    @ManyToOne
-    @JoinColumn(name="galleryId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "galleryId")
     private Gallery gallery;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "eventId")
     private Event event;
 
     private Date startDate;

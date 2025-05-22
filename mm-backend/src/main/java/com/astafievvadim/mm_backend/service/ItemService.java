@@ -32,9 +32,9 @@ public class ItemService {
 
     public Item create(Item item) {
         FileMetadata fileMetadata = null;
-        if (item.getFileData() != null) {
-            fileMetadata = fileMetadataRepo.findById(item.getFileData().getId())
-                    .orElseThrow(() -> new RuntimeException("FileMetadata not found with id: " + item.getFileData().getId()));
+        if (item.getFileMetadata() != null) {
+            fileMetadata = fileMetadataRepo.findById(item.getFileMetadata().getId())
+                    .orElseThrow(() -> new RuntimeException("FileMetadata not found with id: " + item.getFileMetadata().getId()));
         }
 
         Item newItem = new Item();
@@ -42,7 +42,7 @@ public class ItemService {
         newItem.setDescription(item.getDescription());
         newItem.setYear(item.getYear());
         newItem.setType(item.getType());
-        newItem.setFileData(fileMetadata); // will be null if none provided
+        newItem.setFileMetadata(fileMetadata); // will be null if none provided
 
         return itemRepo.save(newItem);
     }
@@ -52,14 +52,14 @@ public class ItemService {
         Item existingItem = itemRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Item not found with id: " + id));
 
-        FileMetadata fileMetadata = fileMetadataRepo.findById(item.getFileData().getId())
-                .orElseThrow(() -> new RuntimeException("FileMetadata not found with id: " + item.getFileData().getId()));
+        FileMetadata fileMetadata = fileMetadataRepo.findById(item.getFileMetadata().getId())
+                .orElseThrow(() -> new RuntimeException("FileMetadata not found with id: " + item.getFileMetadata().getId()));
 
         existingItem.setName(item.getName());
         existingItem.setDescription(item.getDescription());
         existingItem.setYear(item.getYear());
         existingItem.setType(item.getType());
-        existingItem.setFileData(fileMetadata);
+        existingItem.setFileMetadata(fileMetadata);
 
         return itemRepo.save(existingItem);
     }

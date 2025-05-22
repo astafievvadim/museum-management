@@ -1,7 +1,6 @@
 package com.astafievvadim.mm_backend.model;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,30 +14,33 @@ public class Address {
     private String street;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cityId")
+    @JoinColumn(name = "city_id")
     private City city;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "countryId")
+    @JoinColumn(name = "country_id")
     private Country country;
 
     private String postalCode;
-    @OneToMany
-    private List<Partner> partners = new ArrayList<>();
 
     @OneToMany
+    private List<Partner> partners = new ArrayList<>();
+    @OneToMany
     private List<Gallery> galleries = new ArrayList<>();
+    @OneToMany
+    private List<Customer> customers = new ArrayList<>();
 
     public Address() {
     }
 
-    public Address(String street, City city, Country country, String postalCode, List<Partner> partners, List<Gallery> galleries) {
+    public Address(String street, City city, Country country, String postalCode, List<Partner> partners, List<Gallery> galleries, List<Customer> customers) {
         this.street = street;
         this.city = city;
         this.country = country;
         this.postalCode = postalCode;
         this.partners = partners;
         this.galleries = galleries;
+        this.customers = customers;
     }
 
     public Long getId() {
@@ -95,5 +97,13 @@ public class Address {
 
     public void setGalleries(List<Gallery> galleries) {
         this.galleries = galleries;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
     }
 }

@@ -1,6 +1,7 @@
 package com.astafievvadim.mm_backend.service;
 
 import com.astafievvadim.mm_backend.model.Customer;
+import com.astafievvadim.mm_backend.payload.CustomerSignUpRequest;
 import com.astafievvadim.mm_backend.repo.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,4 +51,23 @@ public class CustomerService {
                 .orElseThrow(() -> new RuntimeException("Customer not found with id: " + id));
         customerRepo.delete(existing);
     }
+
+    // Check if email exists
+    public boolean existsByEmail(String email) {
+        return customerRepo.findByEmail(email) != null;
+    }
+
+    public Customer registerNewCustomer(CustomerSignUpRequest signUpRequest) {
+        if (existsByEmail(signUpRequest.getEmail())) {
+            throw new IllegalArgumentException("Email already in use");
+        }
+
+        Customer customer = new Customer();
+        customer.setEmail(signUpRequest.getEmail());
+        customer.setFirstName(signUpRequest.getFirstName());
+        customer.setLastName(signUpRequest.getLastName());
+
+        return customerRepo.save(customer);
+    }
+
 }

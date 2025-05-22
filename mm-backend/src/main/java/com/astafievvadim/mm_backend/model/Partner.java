@@ -11,8 +11,8 @@ public class Partner {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "addressId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     public Partner() {

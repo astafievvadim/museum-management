@@ -1,7 +1,7 @@
 package com.astafievvadim.mm_backend.model;
 
-
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class City {
@@ -13,16 +13,22 @@ public class City {
     private String name;
 
     private String postalCode;
+
     @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false)
     private Country country;
+
+    @OneToMany(mappedBy = "city")
+    private List<Address> addresses;
 
     public City() {
     }
 
-    public City(String name, String postalCode, Country country) {
+    public City(String name, String postalCode, Country country, List<Address> addresses) {
         this.name = name;
         this.postalCode = postalCode;
         this.country = country;
+        this.addresses = addresses;
     }
 
     public Long getId() {
@@ -55,5 +61,13 @@ public class City {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }
