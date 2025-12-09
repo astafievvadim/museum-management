@@ -4,6 +4,7 @@ import com.astafievvadim.mm_backend.model.Partner;
 import com.astafievvadim.mm_backend.service.PartnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,18 +32,21 @@ public class PartnerController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Partner> createPartner(@RequestBody Partner partner) {
         Partner createdPartner = partnerService.create(partner);
         return ResponseEntity.ok(createdPartner);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Partner> updatePartner(@RequestBody Partner partner, @PathVariable Long id) {
         Partner updatedPartner = partnerService.update(partner, id);
         return ResponseEntity.ok(updatedPartner);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deletePartner(@PathVariable Long id) {
         partnerService.delete(id);
         return ResponseEntity.noContent().build();

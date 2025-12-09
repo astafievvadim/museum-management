@@ -1,5 +1,6 @@
 package com.astafievvadim.mm_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -28,9 +29,11 @@ public class Item {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
+    @JsonIgnore
     private Author author;
 
     @ManyToMany(mappedBy = "items")
+    @JsonIgnore
     private List<Exhibit> exhibits;
 
     // No-args constructor

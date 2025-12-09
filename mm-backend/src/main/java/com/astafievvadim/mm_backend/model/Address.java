@@ -17,26 +17,23 @@ public class Address {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id")
-    private Country country;
-
     private String postalCode;
 
-    @OneToMany
-    private List<Partner> partners = new ArrayList<>();
-    @OneToMany
+    @OneToMany(mappedBy = "address")
     private List<Gallery> galleries = new ArrayList<>();
-    @OneToMany
+    @OneToMany(mappedBy = "address")
+    private List<Partner> partners = new ArrayList<>();
+
+    @OneToMany(mappedBy = "address")
     private List<Customer> customers = new ArrayList<>();
+
 
     public Address() {
     }
 
-    public Address(String street, City city, Country country, String postalCode, List<Partner> partners, List<Gallery> galleries, List<Customer> customers) {
+    public Address(String street, City city, String postalCode, List<Partner> partners, List<Gallery> galleries, List<Customer> customers) {
         this.street = street;
         this.city = city;
-        this.country = country;
         this.postalCode = postalCode;
         this.partners = partners;
         this.galleries = galleries;
@@ -67,13 +64,6 @@ public class Address {
         this.city = city;
     }
 
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
 
     public String getPostalCode() {
         return postalCode;

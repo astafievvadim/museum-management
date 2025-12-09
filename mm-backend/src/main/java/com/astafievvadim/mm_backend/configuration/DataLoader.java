@@ -1,6 +1,8 @@
+/*
 package com.astafievvadim.mm_backend.configuration;
 
 import com.astafievvadim.mm_backend.model.*;
+import com.astafievvadim.mm_backend.payload.AddressDTO;
 import com.astafievvadim.mm_backend.payload.FileResponse;
 import com.astafievvadim.mm_backend.repo.ExhibitRepo;
 import com.astafievvadim.mm_backend.service.*;
@@ -109,13 +111,13 @@ public class DataLoader implements CommandLineRunner {
         address1.setStreet("123 Main St");
         address1.setCity(cityNY);
         address1.setCountry(countryUSA);
-        address1 = addressService.create(address1);
+        address1 = addressService.create(addressService.toDTO(address1));
 
         Address address2 = new Address();
         address2.setStreet("456 Art Blvd");
         address2.setCity(cityParis);
         address2.setCountry(countryFrance);
-        address2 = addressService.create(address2);
+        address2 = addressService.create(addressService.toDTO(address2));
 
         // Galleries
         Gallery gallery1 = new Gallery();
@@ -149,7 +151,7 @@ public class DataLoader implements CommandLineRunner {
 
         // 2. Create MultipartFile mock (replace with actual bytes)
         MultipartFile multipartFile1 = new MockMultipartFile(
-                "file1", "sculpture1.png", "image/png", new byte[]{ /* file bytes */ }
+                "file1", "sculpture1.png", "image/png", new byte[]{ /* file bytes  }
         );
 
         // 3. Add file, which internally reloads the item to attach managed entity
@@ -299,7 +301,7 @@ public class DataLoader implements CommandLineRunner {
 
 // 2. Create a MultipartFile mock for second item
         MultipartFile multipartFile2 = new MockMultipartFile(
-                "file2", "sculpture2.png", "image/png", new byte[]{ /* file bytes */ }
+                "file2", "sculpture2.png", "image/png", new byte[]{ /* file bytes  }
         );
         FileResponse fileResponse2 = fileMetadataService.addFile(multipartFile2, item2.getId());
         FileMetadata fileMetadataEntity2 = fileMetadataService.findById(fileResponse2.getFileId());
@@ -327,7 +329,34 @@ public class DataLoader implements CommandLineRunner {
         location3.setRemoveDate(createDate(2024, 4, 29));
         location3 = locationService.create(location3);
 
+        // Create new Event: "Razminochnaya"
+        Event eventRazminochnaya = new Event();
+        eventRazminochnaya.setName("Razminochnaya");
+        eventRazminochnaya.setStartDate(createDate(2024, 9, 1));
+        eventRazminochnaya.setEndDate(createDate(2024, 9, 30));
+        eventRazminochnaya = eventService.create(eventRazminochnaya);
+
+// Create new Customer: "Stepan Tryastsin"
+        Customer customerStepan = new Customer();
+        customerStepan.setFirstName("Stepan");
+        customerStepan.setLastName("Tryastsin");
+        customerStepan.setBirthdate(createDate(1995, 8, 15));
+        customerStepan.setEmail("stepan.tryastsin@example.com");
+        customerStepan.setTelegramUserId(555666777L);
+        customerStepan.setTelegramUsername("stepan_t");
+        customerStepan = customerService.create(customerStepan);
+
+// Create Ticket for Stepan for Razminochnaya
+        Ticket stepanTicket = new Ticket();
+        stepanTicket.setPurchaseDate(new Date());
+        stepanTicket.setCustomer(customerStepan);
+        stepanTicket.setEvent(eventRazminochnaya);
+        stepanTicket.setTicketType(ticketType1);  // Standard
+        stepanTicket.setEmployee(employeeA);      // let's assign employeeA
+        stepanTicket.setValid(true);
+        stepanTicket = ticketService.create(stepanTicket);
 
         System.out.println("Fake data loaded successfully.");
     }
 }
+*/

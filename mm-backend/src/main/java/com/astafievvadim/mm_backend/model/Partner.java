@@ -12,7 +12,7 @@ public class Partner {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", nullable = true)
     private Address address;
 
     public Partner() {

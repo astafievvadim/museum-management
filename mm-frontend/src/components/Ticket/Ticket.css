@@ -1,0 +1,107 @@
+/* Item.css */
+
+/* ===== Item Form Styles ===== */
+.item-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+}
+
+.item-card label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.item-card input[type="text"],
+.item-card input[type="email"],
+.item-card input[type="date"],
+.item-card select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.item-card input[type="text"]:focus,
+.item-card input[type="email"]:focus,
+.item-card input[type="date"]:focus,
+.item-card select:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.item-card button {
+  cursor: pointer;
+  border: none;
+  margin-bottom: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  padding: 10px 16px;
+}
+
+.item-card button.bg-blue-600 {
+  background-color: #2563eb;
+  color: white;
+}
+
+.item-card button.bg-blue-600:hover {
+  background-color: #1d4ed8;
+}
+
+.item-card button.bg-green-600 {
+  background-color: #16a34a;
+  color: white;
+}
+
+.item-card button.bg-green-600:hover {
+  background-color: #15803d;
+}
+
+.item-card button.bg-gray-400 {
+  background-color: #9ca3af;
+  color: white;
+}
+
+.item-card button.bg-gray-400:hover {
+  background-color: #6b7280;
+}
+
+.item-card button + button {
+  margin-left: 12px;
+}
+
+/* ===== Item List Styles ===== */
+.item-list {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* ===== Table Styles ===== */
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: sans-serif;
+}
+
+.ticket-table th,
+.ticket-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.ticket-table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+.ticket-table tr:hover {
+  background-color: #f9fafb;
+}

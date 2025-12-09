@@ -21,17 +21,13 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @WebMvcTest(FileController.class)
 @AutoConfigureMockMvc(addFilters = false) // disables Spring Security filters
 public class FileControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private FileMetadataService fileMetadataService;
-
     @Test
     public void testUploadFile() throws Exception {
         MockMultipartFile file = new MockMultipartFile(

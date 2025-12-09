@@ -1,14 +1,17 @@
 package com.astafievvadim.mm_backend.service;
 
 import com.astafievvadim.mm_backend.model.Customer;
+import com.astafievvadim.mm_backend.payload.CustomerDTO;
 import com.astafievvadim.mm_backend.payload.CustomerSignUpRequest;
 import com.astafievvadim.mm_backend.repo.CustomerRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CustomerService {
 
     private final CustomerRepo customerRepo;
@@ -70,4 +73,37 @@ public class CustomerService {
         return customerRepo.save(customer);
     }
 
+    // Convert Customer entity to CustomerDTO
+    public CustomerDTO toDTO(Customer customer) {
+        if (customer == null) return null;
+
+        return new CustomerDTO(
+                customer.getId(),
+                customer.getFirstName(),
+                customer.getLastName(),
+                customer.getBirthdate(),
+                customer.getEmail(),
+                customer.getTelegramId(),
+                customer.getTelegramUserId(),
+                customer.getTelegramUsername(),
+                customer.getAddress().getId()
+        );
+    }
+
+    // Convert CustomerDTO to Customer entity
+    public Customer toEntity(CustomerDTO customerDTO) {
+        if (customerDTO == null) return null;
+
+        Customer customer = new Customer();
+        customer.setId(customerDTO.getId()); // optional: for updates
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
+        customer.setBirthdate(customerDTO.getBirthdate());
+        customer.setEmail(customerDTO.getEmail());
+        customer.setTelegramId(customerDTO.getTelegramId());
+        customer.setTelegramUserId(customerDTO.getTelegramUserId());
+        customer.setTelegramUsername(customerDTO.getTelegramUsername());
+
+        return customer;
+    }
 }

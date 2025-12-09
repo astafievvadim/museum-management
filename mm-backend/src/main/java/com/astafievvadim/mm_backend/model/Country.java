@@ -1,5 +1,6 @@
 package com.astafievvadim.mm_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -13,11 +14,9 @@ public class Country implements Serializable {
 
     private String name;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<City> cities;
-
-    @OneToMany(mappedBy = "country")
-    private List<Address> addresses;
 
     public Country() {
     }
@@ -48,13 +47,5 @@ public class Country implements Serializable {
 
     public void setCities(List<City> cities) {
         this.cities = cities;
-    }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
     }
 }

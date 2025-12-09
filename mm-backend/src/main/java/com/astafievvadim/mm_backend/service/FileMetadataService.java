@@ -1,7 +1,6 @@
 package com.astafievvadim.mm_backend.service;
 
 import com.astafievvadim.mm_backend.model.FileMetadata;
-import com.astafievvadim.mm_backend.model.Item;
 import com.astafievvadim.mm_backend.payload.FileResponse;
 import com.jlefebure.spring.boot.minio.MinioException;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,4 +20,8 @@ public interface FileMetadataService {
     FileMetadata findById(Long id);
 
     FileResponse replaceFileForItem(MultipartFile file, Long itemId) throws Exception;
+
+    FileResponse toDTO(FileMetadata fileMetadata);
+
+    FileMetadata toEntity(FileResponse fileResponse);
 }

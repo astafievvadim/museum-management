@@ -3,6 +3,7 @@ package com.astafievvadim.mm_backend.controller;
 import com.astafievvadim.mm_backend.model.Country;
 import com.astafievvadim.mm_backend.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,16 +30,19 @@ public class CountryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public Country createCountry(@RequestBody Country country) {
         return countryService.create(country);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public Country updateCountry(@RequestBody Country country, @PathVariable Long id) {
         return countryService.update(country, id);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public void deleteCountry(@PathVariable Long id) {
         countryService.delete(id);
     }

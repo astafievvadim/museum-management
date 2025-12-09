@@ -1,13 +1,16 @@
 package com.astafievvadim.mm_backend.service;
 
 import com.astafievvadim.mm_backend.model.Country;
+import com.astafievvadim.mm_backend.payload.CountryDTO;
 import com.astafievvadim.mm_backend.repo.CountryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CountryService {
 
     private final CountryRepo countryRepo;
@@ -47,5 +50,23 @@ public class CountryService {
                 .orElseThrow(() -> new RuntimeException("Country not found with id: " + id));
 
         countryRepo.delete(country);
+    }
+
+    // Convert Country entity to CountryDTO
+    public CountryDTO toDTO(Country country) {
+        if (country == null) return null;
+        return new CountryDTO(
+                country.getId(),
+                country.getName()
+        );
+    }
+
+    // Convert CountryDTO to Country entity
+    public Country toEntity(CountryDTO countryDTO) {
+        if (countryDTO == null) return null;
+        Country country = new Country();
+        country.setId(countryDTO.getId());  // optional, usually for updates
+        country.setName(countryDTO.getName());
+        return country;
     }
 }

@@ -1,5 +1,6 @@
 package com.astafievvadim.mm_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -15,6 +16,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "authorId", nullable = false)
+    @JsonBackReference
     private Customer author;
 
     @ManyToOne

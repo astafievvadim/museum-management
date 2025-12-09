@@ -1,5 +1,6 @@
 package com.astafievvadim.mm_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +15,7 @@ public class Hall {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gallery_id")  // renamed to follow typical conventions
+    @JsonIgnore
     private Gallery gallery;
 
     public Hall() {

@@ -4,6 +4,7 @@ import com.astafievvadim.mm_backend.model.Hall;
 import com.astafievvadim.mm_backend.service.HallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,18 +32,21 @@ public class HallController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Hall> createHall(@RequestBody Hall hall) {
         Hall createdHall = hallService.create(hall);
         return ResponseEntity.ok(createdHall);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Hall> updateHall(@RequestBody Hall hall, @PathVariable Long id) {
         Hall updatedHall = hallService.update(hall, id);
         return ResponseEntity.ok(updatedHall);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteHall(@PathVariable Long id) {
         hallService.delete(id);
         return ResponseEntity.noContent().build();

@@ -3,6 +3,7 @@ package com.astafievvadim.mm_backend.controller;
 import com.astafievvadim.mm_backend.model.Post;
 import com.astafievvadim.mm_backend.service.PostService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,11 +31,13 @@ public class PostController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public Post createPost(@RequestBody Post post) {
         return postService.save(post);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
         return postService.findById(id)
                 .map(post -> {
@@ -47,6 +50,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         if (postService.findById(id).isPresent()) {
             postService.deleteById(id);

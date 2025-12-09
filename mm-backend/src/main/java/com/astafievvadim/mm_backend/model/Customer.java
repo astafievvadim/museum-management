@@ -1,5 +1,7 @@
 package com.astafievvadim.mm_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import org.springframework.lang.Nullable;
@@ -35,9 +37,11 @@ public class Customer {
     private Address address;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private List<Ticket> tickets;
 
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private List<Comment> comments;
 
     public Customer() {

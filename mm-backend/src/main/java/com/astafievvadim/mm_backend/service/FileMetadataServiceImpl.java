@@ -9,6 +9,7 @@ import com.jlefebure.spring.boot.minio.MinioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class FileMetadataServiceImpl implements FileMetadataService {
 
     private final MinioStorageService minioStorageService;
@@ -47,6 +49,10 @@ public class FileMetadataServiceImpl implements FileMetadataService {
             metadata.setSize(file.getSize());
             metadata.setLastModified(new Date());
             fileMetadataRepository.save(metadata);
+
+            // Link FileMetadata to Item and save Item
+            item.setFileMetadata(metadata);
+            itemRepository.save(item);
 
             return new FileResponse(
                     filename,
@@ -167,5 +173,30 @@ public class FileMetadataServiceImpl implements FileMetadataService {
                     newMetadata.getId()
             );
         }
+    }
+
+    @Override
+    public FileResponse toDTO(FileMetadata fileMetadata) {
+        if (fileMetadata == null) return null;
+        return new FileResponse(
+                fileMetadata.getFilename(),
+                fileMetadata.getContentType(),
+                fileMetadata.getSize(),
+                fileMetadata.getLastModified(),
+                null, // Usually InputStreamResource is null here, loaded separately if needed
+                fileMetadata.getId()
+        );
+    }
+
+    @Override
+    public FileMetadata toEntity(FileResponse fileResponse) {
+        if (fileResponse == null) return null;
+        FileMetadata fileMetadata = new FileMetadata();
+        fileMetadata.setId(fileResponse.getFileId());
+        fileMetadata.setFilename(fileResponse.getFilename());
+        fileMetadata.setContentType(fileResponse.getContentType());
+        fileMetadata.setSize(fileResponse.getFileSize());
+        fileMetadata.setLastModified(fileResponse.getCreatedTime());
+        return fileMetadata;
     }
 }

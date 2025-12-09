@@ -1,0 +1,56 @@
+.dashboard {
+  display: flex;          /* horizontal layout */
+  min-height: 100vh;
+  background-color: #f6ebd9; /* optional background */
+  color: #4c352d;
+}
+
+.dashboard-main {
+  flex: 1;                /* take all remaining width */
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f6ebd9;
+}
+
+
+.dashboard-header {
+  background-color: #dda04d; /* primary accent */
+  color: #f6ebd9;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+}
+
+.dashboard-section {
+  background-color: #deaf5d; /* secondary accent */
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+}
+
+.button-primary {
+  background-color: #aa6442; /* highlight button */
+  color: #f6ebd9;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.button-primary:hover {
+  background-color: #dda04d;
+}
+
+.link {
+  color: #4c352d;
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: #aa6442;
+}

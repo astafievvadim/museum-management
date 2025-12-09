@@ -1,0 +1,64 @@
+.museum-container {
+  background-color: #f6ebd9;
+  color: #4c352d;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  color: #aa6442;
+}
+
+.exhibit-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1rem;
+}
+
+.exhibit-list li {
+  background-color: #deaf5d;
+  padding: 0.5rem;
+  margin-bottom: 0.3rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.exhibit-list li:hover {
+  background-color: #dda04d;
+  color: #f6ebd9;
+}
+
+.exhibit-details {
+  background-color: #aa6442;
+  color: #f6ebd9;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.model-viewer {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #4c352d;
+  border-radius: 4px;
+  color: #deaf5d;
+}
+
+button {
+  background-color: #dda04d;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  color: #4c352d;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #aa6442;
+  color: #f6ebd9;
+}

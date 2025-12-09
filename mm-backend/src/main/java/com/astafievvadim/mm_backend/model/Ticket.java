@@ -1,6 +1,10 @@
 package com.astafievvadim.mm_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.lang.NonNull;
+
 import java.util.Date;
 
 @Entity
@@ -12,20 +16,24 @@ public class Ticket {
 
     private Date purchaseDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "customerId")
+    @NonNull
     private Customer customer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "eventId")
+    @NonNull
     private Event event;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ticketTypeId")
+    @NonNull
     private TicketType ticketType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "employeeId")
+    @NonNull
     private Employee employee;
 
     private boolean isValid;

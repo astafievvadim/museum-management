@@ -2,14 +2,18 @@ package com.astafievvadim.mm_backend.service;
 
 import com.astafievvadim.mm_backend.model.City;
 import com.astafievvadim.mm_backend.model.Country;
+import com.astafievvadim.mm_backend.payload.CityDTO;
 import com.astafievvadim.mm_backend.repo.CityRepo;
 import com.astafievvadim.mm_backend.repo.CountryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CityService {
 
     private final CityRepo cityRepo;
@@ -21,13 +25,50 @@ public class CityService {
         this.countryRepo = countryRepo;
     }
 
-    public List<City> findAll() {
-        return cityRepo.findAll();
+    // Convert City entity to CityDTO
+    public CityDTO toDTO(City city) {
+        if (city == null) return null;
+        return new CityDTO(
+                city.getId(),
+                city.getName(),
+                city.getPostalCode(),
+                city.getCountry().getId()
+        );
     }
 
-    public City findById(Long id) {
-        return cityRepo.findById(id)
+    // Convert CityDTO to City entity
+    public City toEntity(CityDTO cityDTO) {
+        if (cityDTO == null) return null;
+
+        City city = new City();
+        city.setName(cityDTO.getName());
+        city.setPostalCode(cityDTO.getPostalCode());
+
+        if (cityDTO.getCountryId() != null) {
+            Country country = countryRepo.findById(cityDTO.getCountryId())
+                    .orElseThrow(() -> new RuntimeException("Country not found with id: " + cityDTO.getCountryId()));
+            city.setCountry(country);
+        } else {
+            city.setCountry(null);
+        }
+
+        // Addresses typically not set from DTO to entity in this method
+        // as they might require separate handling
+
+        return city;
+    }
+
+    public List<CityDTO> findAll() {
+        List<City> cities = cityRepo.findAll();
+        return cities.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public CityDTO findById(Long id) {
+        City city = cityRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("City not found with id: " + id));
+        return toDTO(city);
     }
 
     public City create(City city, Long countryId) {
@@ -42,7 +83,7 @@ public class CityService {
         return cityRepo.save(newCity);
     }
 
-    public City update(City city, Long id) {
+    public CityDTO update(City city, Long id) {
         City existingCity = cityRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("City not found with id: " + id));
 
@@ -55,7 +96,8 @@ public class CityService {
         existingCity.setName(city.getName());
         existingCity.setPostalCode(city.getPostalCode());
 
-        return cityRepo.save(existingCity);
+        City updatedCity = cityRepo.save(existingCity);
+        return toDTO(updatedCity);
     }
 
     public void delete(Long id) {

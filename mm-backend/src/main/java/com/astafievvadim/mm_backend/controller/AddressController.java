@@ -1,6 +1,7 @@
 package com.astafievvadim.mm_backend.controller;
 
 import com.astafievvadim.mm_backend.model.Address;
+import com.astafievvadim.mm_backend.payload.AddressDTO;
 import com.astafievvadim.mm_backend.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +20,23 @@ public class AddressController {
     }
 
     @GetMapping
-    public List<Address> getAllAddresses() {
+    public List<AddressDTO> getAllAddresses() {
         return addressService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Address getAddressById(@PathVariable Long id) {
+    public AddressDTO getAddressById(@PathVariable Long id) {
         return addressService.findById(id);
     }
 
     @PostMapping
-    public Address createAddress(@RequestBody Address address) {
-        return addressService.create(address);
+    public Address createAddress(@RequestBody AddressDTO addressDTO) {
+        return addressService.create(addressDTO);
     }
 
     @PutMapping("/{id}")
-    public Address updateAddress(@RequestBody Address address, @PathVariable Long id) {
-        return addressService.update(address, id);
+    public AddressDTO updateAddress(@RequestBody AddressDTO addressDTO, @PathVariable Long id) {
+        return addressService.update(addressDTO, id);
     }
 
     @DeleteMapping("/{id}")

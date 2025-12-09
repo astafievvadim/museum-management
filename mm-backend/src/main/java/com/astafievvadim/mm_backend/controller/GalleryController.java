@@ -4,6 +4,7 @@ import com.astafievvadim.mm_backend.model.Gallery;
 import com.astafievvadim.mm_backend.service.GalleryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,18 +32,21 @@ public class GalleryController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Gallery> createGallery(@RequestBody Gallery gallery) {
         Gallery createdGallery = galleryService.create(gallery);
         return ResponseEntity.ok(createdGallery);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Gallery> updateGallery(@RequestBody Gallery gallery, @PathVariable Long id) {
         Gallery updatedGallery = galleryService.update(gallery, id);
         return ResponseEntity.ok(updatedGallery);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteGallery(@PathVariable Long id) {
         galleryService.delete(id);
         return ResponseEntity.noContent().build();

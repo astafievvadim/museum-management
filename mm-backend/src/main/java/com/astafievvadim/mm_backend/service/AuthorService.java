@@ -3,16 +3,20 @@ package com.astafievvadim.mm_backend.service;
 import com.astafievvadim.mm_backend.model.Author;
 import com.astafievvadim.mm_backend.model.Country;
 import com.astafievvadim.mm_backend.model.Item;
+import com.astafievvadim.mm_backend.payload.AuthorDTO;
 import com.astafievvadim.mm_backend.repo.AuthorRepo;
 import com.astafievvadim.mm_backend.repo.CountryRepo;
 import com.astafievvadim.mm_backend.repo.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class AuthorService {
 
     private final AuthorRepo authorRepo;
@@ -86,5 +90,53 @@ public class AuthorService {
         Author author = authorRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Author not found with id: " + id));
         authorRepo.delete(author);
+    }
+
+    public AuthorDTO toDTO(Author author) {
+        if (author == null) return null;
+        List<Long> itemIds = null;
+        if (author.getItems() != null) {
+            itemIds = author.getItems().stream()
+                    .map(Item::getId)
+                    .collect(Collectors.toList());
+        }
+        return new AuthorDTO(
+                author.getName(),
+                author.getLastname(),
+                author.getBirthDate(),
+                author.getDeathDate(),
+                author.getBio(),
+                author.getCountry().getId(),
+                itemIds
+        );
+    }
+
+    // Convert DTO to entity
+    public Author toEntity(AuthorDTO dto) {
+        if (dto == null) return null;
+
+        Author author = new Author();
+
+        author.setName(dto.getName());
+        author.setLastname(dto.getLastname());
+        author.setBirthDate(dto.getBirthDate());
+        author.setDeathDate(dto.getDeathDate());
+
+        if (dto.getCountryId() != null) {
+            Country country = countryRepo.findById(dto.getCountryId())
+                    .orElseThrow(() -> new RuntimeException("Country not found with id: " + dto.getCountryId()));
+            author.setCountry(country);
+        } else {
+            author.setCountry(null);
+        }
+
+        if (dto.getItemIds() != null && !dto.getItemIds().isEmpty()) {
+            List<Item> items = itemRepo.findAllById(dto.getItemIds());
+            author.setItems(items);
+        } else {
+            author.setItems(null);
+        }
+
+        return author;
     }
 }

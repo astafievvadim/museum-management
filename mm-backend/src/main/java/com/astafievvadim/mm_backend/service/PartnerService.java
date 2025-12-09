@@ -2,14 +2,17 @@ package com.astafievvadim.mm_backend.service;
 
 import com.astafievvadim.mm_backend.model.Address;
 import com.astafievvadim.mm_backend.model.Partner;
+import com.astafievvadim.mm_backend.payload.PartnerDTO;
 import com.astafievvadim.mm_backend.repo.AddressRepo;
 import com.astafievvadim.mm_backend.repo.PartnerRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class PartnerService {
 
     private final PartnerRepo partnerRepo;
@@ -58,5 +61,31 @@ public class PartnerService {
         Partner partner = partnerRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Partner not found with id: " + id));
         partnerRepo.delete(partner);
+    }
+
+    // Convert entity to DTO
+    public PartnerDTO toDTO(Partner partner) {
+        if (partner == null) return null;
+
+        return new PartnerDTO(
+                partner.getId(),
+                partner.getName(),
+                partner.getAddress() != null ? partner.getAddress().getId() : null
+        );
+    }
+
+    // Convert DTO to entity
+    public Partner toEntity(PartnerDTO dto) {
+        if (dto == null) return null;
+
+        Address address = addressRepo.findById(dto.getAddressId())
+                .orElseThrow(() -> new RuntimeException("Address not found with id: " + dto.getAddressId()));
+
+        Partner partner = new Partner();
+        partner.setId(dto.getId());
+        partner.setName(dto.getName());
+        partner.setAddress(address);
+
+        return partner;
     }
 }

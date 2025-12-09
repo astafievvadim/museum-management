@@ -2,14 +2,17 @@ package com.astafievvadim.mm_backend.service;
 
 import com.astafievvadim.mm_backend.model.Address;
 import com.astafievvadim.mm_backend.model.Gallery;
+import com.astafievvadim.mm_backend.payload.GalleryDTO;
 import com.astafievvadim.mm_backend.repo.AddressRepo;
 import com.astafievvadim.mm_backend.repo.GalleryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class GalleryService {
 
     private final GalleryRepo galleryRepo;
@@ -59,5 +62,32 @@ public class GalleryService {
                 .orElseThrow(() -> new RuntimeException("Gallery not found with id: " + id));
 
         galleryRepo.delete(gallery);
+    }
+
+    public GalleryDTO toDTO(Gallery gallery) {
+        if (gallery == null) return null;
+        Long addressId = gallery.getAddress() != null ? gallery.getAddress().getId() : null;
+        return new GalleryDTO(
+                gallery.getId(),
+                gallery.getName(),
+                addressId
+        );
+    }
+    public Gallery toEntity(GalleryDTO dto) {
+        if (dto == null) return null;
+
+        Gallery gallery = new Gallery();
+        gallery.setId(dto.getId());
+        gallery.setName(dto.getName());
+
+        if (dto.getAddressId() != null) {
+            Address address = addressRepo.findById(dto.getAddressId())
+                    .orElseThrow(() -> new RuntimeException("Address not found with id: " + dto.getAddressId()));
+            gallery.setAddress(address);
+        } else {
+            gallery.setAddress(null);
+        }
+
+        return gallery;
     }
 }
