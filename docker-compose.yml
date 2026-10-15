@@ -1,7 +1,7 @@
 services:
 
   mm_minio_db:
-    image: docker.io/bitnami/minio:2025
+    image: docker.io/soldevelo/minio:2025.10
     container_name: mm_minio_db
     ports:
       - '9000:9000'
